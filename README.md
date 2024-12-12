@@ -19,6 +19,7 @@ The Nucleo attaches to standoffs and an acrylic mount as shown in this [model](h
 **Figure 3:** Romi bottom with line sensor
 
 Table 1 lists all of the parts besides the jumper wires used in this project.
+
 **Table 1:** Complete BOM
 | Part                           | Supplier  | P/N    | Additional Info                                                                 |
 |--------------------------------|-----------|--------|---------------------------------------------------------------------------------|
@@ -35,7 +36,8 @@ Table 1 lists all of the parts besides the jumper wires used in this project.
 | Misc. mounts and fasteners     | N/A       | N/A    | [Onshape Link](https://cad.onshape.com/documents/b78783ff999bc8e6a9990234)      |
 
 Table 2 lists the wire connections used.
-**Table 2:** Wiring
+
+**Table 2:** Wire connections
 | Device/Function          | Signal              | Nucleo Pin      | Device Pin |
 |--------------------------|---------------------|-----------------|------------|
 | Left Encoder (Romi PDB)  | Enc Ch A            | B5 (Tim 3)      | ELA        |
