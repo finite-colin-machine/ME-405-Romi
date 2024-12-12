@@ -71,7 +71,7 @@ Table 2 lists the wire connections used.
 |                          | Sensor 7            | C3              | S7 (L)     |
 
 ## Code
-The code folder contains all of the files that should be stored on the Nucleo in order to run. This project uses MicroPython.
+The code folder contains all of the files that need to be stored on the Nucleo in order to run. This project uses MicroPython, which the nucleo needs to be preconfigured with before adding the other files.
 
 ### Task Structure
 ADD OVERALL TASK DIAGRAM AND INDIVIDUAL FSMs WITH DISCUSSION SIMILAR TO LAB 3
