@@ -26,11 +26,11 @@
 |                  | GND           | GND           | N/A          |
 | Line Sensor      | VIN           | 5V            | N/A          |
 |                  | GND           | GND           | N/A          |
-|                  | S0 (R)        | A4            | N/A          |
+|                  | S0 (Right)    | A4            | N/A          |
 |                  | S1            | B0            | N/A          |
 |                  | S2            | C1            | N/A          |
 |                  | S3            | C0            | N/A          |
 |                  | S4            | A6            | N/A          |
 |                  | S5            | A7            | N/A          |
 |                  | S6            | B1            | N/A          |
-|                  | S7 (L)        | C3            | N/A          |
+|                  | S7 (Left)     | C3            | N/A          |
