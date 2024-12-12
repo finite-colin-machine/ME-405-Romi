@@ -74,9 +74,10 @@ Table 2 lists the wire connections used.
 
 
 ### Task Structure and Functions
+ADD OVERALL TASK DIAGRAM AND INDIVIDUAL FSMs WITH DISCUSSION SIMILAR TO LAB 3
 
 ### Control System
 Figure 5 depicts the overall control system for the robot. We specify velocity and setpoints for the robot control loop. The robot control calculates the actual translational velocity using wheel speed measurements from the motor tasks and gathers yaw measurements from the IMU. Both are fed through PI control to become velocity and yaw requests. Omega setpoints are calculated from these requests using the robot parameters and sent to each of the motor control tasks. The motor control tasks perform PI control of the left and right wheel speeds using omega setpoints from the robot control and real omega measurements calculated from the encoders.
 
-
-**Figure 3:** Overall control system
+![Control System](images/control-system.png "Control System")
+**Figure 5:** Overall control system
