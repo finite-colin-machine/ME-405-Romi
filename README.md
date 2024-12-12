@@ -7,9 +7,12 @@ This is the repository for the ME 405 term project that required building and pr
 
 ## Hardware
 The robot is built off a Romi chassis and controlled using a Nucleo L476RG running MicroPython. An additional circuit board called the Shoe of Brian attaches to the Nucleo. Information about the shoe and general support for the techniques used in this project can be found [here](https://github.com/spluttflob/ME405-Support).
+
 ![Romi Front](images/romi-front.JPG "Romi Front")
-The Nucleo attaches to standoffs and an acrylic mount documented at https://cad.onshape.com/documents/b78783ff999bc8e6a9990234. The IMU and optional Bluetooth module are taped to the sides of the acrylic mount. The bump sensors screw directly to the front of the chassis, and the line sensor is taped to the line sensor mount which taped to the chassis.
-EMBED romi-bottom.jpg
+
+The Nucleo attaches to standoffs and an acrylic mount as shown in this [model](https://cad.onshape.com/documents/b78783ff999bc8e6a9990234). The IMU and optional Bluetooth module are taped to the sides of the acrylic mount. The bump sensors screw directly to the front of the chassis, and the line sensor is taped to the line sensor mount which taped to the chassis.
+
+![Romi Bottom](images/romi-bottom.JPG "Romi Bottom")
 
 ### Wiring
 
