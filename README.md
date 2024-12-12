@@ -32,7 +32,7 @@ Table 1 lists all of the parts besides the jumper wires used in this project.
 | Left Bumper                    | Pololu    | 3673   |                                                                                 |
 | IMU                            | Adafruit  | 2472   |                                                                                 |
 | Bluetooth Module               |           | HC-05  | Optional                                                                       |
-| Line Sensor Mount              | Custom    | N/A    | line-sensor-mount.STEP                                                         |
+| Line Sensor Mount              | Custom    | N/A    | See line-sensor-mount.STEP                                                         |
 | Misc. mounts and fasteners     | N/A       | N/A    | [Onshape](https://cad.onshape.com/documents/b78783ff999bc8e6a9990234)      |
 
 Table 2 lists the wire connections used.
