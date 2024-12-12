@@ -1,5 +1,7 @@
 # ME-405-Romi
 
+
+## Wiring
 | Connection       | Signal        | Nucleo Pin    | Romi PDB Pin |
 |------------------|---------------|---------------|--------------|
 | Left Encoder     | Enc Ch A      | B5 (Tim 3)    | ELA          |
