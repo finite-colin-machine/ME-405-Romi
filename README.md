@@ -69,3 +69,14 @@ Table 2 lists the wire connections used.
 |                          | Sensor 4            | A6              | S4         |
 |                          | Sensor 5            | B1              | S6         |
 |                          | Sensor 7            | C3              | S7 (L)     |
+
+## Code
+
+
+### Task Structure and Functions
+
+### Control System
+Figure 5 depicts the overall control system for the robot. We specify velocity and setpoints for the robot control loop. The robot control calculates the actual translational velocity using wheel speed measurements from the motor tasks and gathers yaw measurements from the IMU. Both are fed through PI control to become velocity and yaw requests. Omega setpoints are calculated from these requests using the robot parameters and sent to each of the motor control tasks. The motor control tasks perform PI control of the left and right wheel speeds using omega setpoints from the robot control and real omega measurements calculated from the encoders.
+
+
+**Figure 3:** Overall control system
