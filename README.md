@@ -24,7 +24,7 @@ Table 1 lists all of the parts besides the jumper wires used in this project.
 | Part                           | Supplier  | P/N    | Additional Info                                                                 |
 |--------------------------------|-----------|--------|---------------------------------------------------------------------------------|
 | Microcontroller                | Nucleo    | L476RG |                                                                                 |
-| Shoe of Brian                  | Custom    | N/A    | [OSH Park Link](https://oshpark.com/shared_projects/e6X6OnYK)                   |
+| Shoe of Brian                  | Custom    | N/A    | [OSH Park](https://oshpark.com/shared_projects/e6X6OnYK)                   |
 | Romi Chassis Kit               | Pololu    | 3509   |                                                                                 |
 | Motor Driver and Power Distribution Board | Pololu | 3543   |                                                                                 |
 | Line Sensor                    | Pololu    | 3672   |                                                                                 |
@@ -33,7 +33,7 @@ Table 1 lists all of the parts besides the jumper wires used in this project.
 | IMU                            | Adafruit  | 2472   |                                                                                 |
 | Bluetooth Module               |           | HC-05  | Optional                                                                       |
 | Line Sensor Mount              | Custom    | N/A    | line-sensor-mount.STEP                                                         |
-| Misc. mounts and fasteners     | N/A       | N/A    | [Onshape Link](https://cad.onshape.com/documents/b78783ff999bc8e6a9990234)      |
+| Misc. mounts and fasteners     | N/A       | N/A    | [Onshape](https://cad.onshape.com/documents/b78783ff999bc8e6a9990234)      |
 
 Table 2 lists the wire connections used.
 
