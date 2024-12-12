@@ -86,4 +86,5 @@ Figure 5 depicts the overall control system for the robot. We specify velocity a
 ![Control System](images/control-system.png "Control System")
 **Figure 5:** Overall control system
 
-## Calculations
+## Supporting Calculations
+
