@@ -86,7 +86,8 @@ The code folder contains all of the files that need to be stored on the Nucleo i
 ### Task Structure
 ADD OVERALL TASK DIAGRAM AND INDIVIDUAL FSMs WITH DISCUSSION SIMILAR TO LAB 3
 
-The Planner Task in our code is less complex than the other tasks, but is still crucial to the success of the program. 
+The Planner Task in our code is less complex than the other tasks, but is still crucial to the success of the program. In State 0, some system parameters are initialized, and on startup and when the code is reset from the PuTTY REPL, the task switches to State 2 for calibration. Upon successful calibration the task moves to State 1, where you are prompted to press the blue button to begin driving. Pressing the blue button will enable the system control loop and allow the robot to begin moving forward.
+
 
 ![Planner Task](images/planner-task.png "Planner Task")
 
