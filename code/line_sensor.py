@@ -17,7 +17,7 @@ class line_sensor:
         '''!@brief Constructs an line sensor object.
         @param pins that connect to the sensor array
         '''
-        self.sensors = [Pin(pin, mode=Pin.OUT_PP) for pin in sensor_pins]
+        self.sensors = [Pin(pin, mode=Pin.OUT_PP) for pin in sensor_pins] # initialize pins
     
     def read_line(self):
         '''!@brief Reads the sensor and outputs a weighted average of the readings
@@ -25,7 +25,7 @@ class line_sensor:
         outputs = []                                       # init output list
         scale = [-1.4, 1.4, -2.4, 2.4, -3.75, 3.75, -5, 5] # scale used for calculating weighted average 
         
-        for sensor in self.sensors:
+        for sensor in self.sensors:      # for each sensor
             sensor.init(mode=Pin.OUT_PP) # set pin to output
             sensor.value(1)              # drive it high
             pyb.udelay(10)               # wait 10 us for output to rise
@@ -33,21 +33,21 @@ class line_sensor:
             time_start = ticks_us()      # keep track of start time
             state = sensor.value()       # read pin
             
-            # keep reading pin until it goes low
+            # keep reading pin until it goes low or timesout
             while state > 0 and ticks_diff(ticks_us(), time_start) < 2000:
-                state = sensor.value()
+                state = sensor.value() # read pin
                 
             decay = ticks_diff(ticks_us(), time_start) # calculate length of decay
             outputs.append(decay)                      # add measurement to list
 
         # raise full_black flag if the total outputs are above a certain threshold
         abs_reading = sum(outputs)
-        if abs_reading > 12000:
-            self.full_black = True
-        else:
-            self.full_black = False
+        if abs_reading > 12000:     # if all measurements are above a threshold
+            self.full_black = True  # raise flag
+        else:                       # otherwise
+            self.full_black = False # lower flag
         
-        # scale outputs
+        # scale outputs by multiplying each measurement by a weight
         for instance in range(8):
             outputs[instance] *= scale [instance]
         
