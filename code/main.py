@@ -494,7 +494,7 @@ def driving_mode(shares):
                 state = 6
             yield(state)
             
-        elif state == 6:
+        elif state == 6:                          # drive into box state
             enc_R.update()                        # Update encoder position
             position = abs(enc_R.get_position())  # Current position magnitude
             if position > drive_3 *1.5:             # Condition to finish backing up
@@ -505,7 +505,7 @@ def driving_mode(shares):
                 state = 7
             yield(state)
               
-        elif state == 7:
+        elif state == 7:                          # turn in place state
             my_control_flag.put(1)
             enc_R.update()                        # Update encoder position
             position = abs(enc_R.get_position())  # Current position magnitude
