@@ -81,15 +81,19 @@ The code folder contains all of the files that need to be stored on the Nucleo i
 ADD OVERALL TASK DIAGRAM AND INDIVIDUAL FSMs WITH DISCUSSION SIMILAR TO LAB 3
 
 ![Planner Task](images/planner-task.png "Planner Task")
+
 **Figure 5:** Planner Task State Transition Diagram
 
 ![Robot Control Task](images/robot-control-task.png "Robot Control Task")
+
 **Figure 5:** Robot Control Task State Transition Diagram
 
 ![Motor Control Task](images/motor-control-task.png "Motor Control Task")
+
 **Figure 5:** Motor Control Task State Transition Diagram
 
 ![Driving Mode Task](images/driving-mode-task.png "Driving Mode Task")
+
 **Figure 5:** Driving Mode Task State Transition Diagram
 
 
