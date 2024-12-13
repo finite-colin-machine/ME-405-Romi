@@ -75,7 +75,8 @@ Figure 4 is a wiring diagram for the robot and, Table 2 lists the wire connectio
 |                          | Sensor 2            | C1              | S2         |
 |                          | Sensor 3            | A3              | S3         |
 |                          | Sensor 4            | A6              | S4         |
-|                          | Sensor 5            | B1              | S6         |
+|                          | Sensor 5            | A7              | S5         |
+|                          | Sensor 6            | B1              | S6         |
 |                          | Sensor 7            | C3              | S7 (L)     |
 
 Additionally, the IMU and Bluetooth Module are both wired to +5V and GND for their power supply.
