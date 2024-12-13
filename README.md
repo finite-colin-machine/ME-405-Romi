@@ -77,6 +77,7 @@ Figure 4 is a wiring diagram for the robot and, Table 2 lists the wire connectio
 |                          | Sensor 4            | A6              | S4         |
 |                          | Sensor 5            | B1              | S6         |
 |                          | Sensor 7            | C3              | S7 (L)     |
+Additionally, the IMU, Bluetooth Module, and Line Sensor are each wired to +5V and GND for their power supply.
 
 ## Code
 The code folder contains all of the files that need to be stored on the Nucleo in order to run. This project uses MicroPython, which the nucleo needs to be preconfigured with before adding the other files.
