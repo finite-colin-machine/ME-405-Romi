@@ -41,7 +41,7 @@ Table 1 lists all of the parts besides the jumper wires used in this project.
 
 Figure 4 is a wiring diagram for the robot and, Table 2 lists the wire connections used.
 
-![image](https://github.com/user-attachments/assets/206b7bbc-3a4a-48c8-a30a-3b5c9615cfee)
+![Wiring Diagram](images/wiring-diagram.JPG "Wiring Diagram")
 
 **Figure 4:** Wiring diagram
 
