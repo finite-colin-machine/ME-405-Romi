@@ -105,6 +105,10 @@ The motor control tasks act similarly to the overall robot control. They take in
 
 **Figure 5:** Motor Control Task State Transition Diagram
 
+The driving mode task is our most complex task, as it is responsible for keeping the robot on the line and making it drive around the obstacle on the course. State 0 initializes some variables and flagsthat are used throughout the task, and when the system control flag is raised by the planner task, it moves to State 3, which instructs it to drive forward to leave the starting area. Once the robot has left the starting area, State 1 is entered, which is our main line-following state. This state reads the line sensor, and sends a yaw rate request to the system control based on the location of the line relative to the robot. When a bump is detected by the bump sensors mounted to the robot, the task enters State 2, where the robot is given a specific set of instructions to drive around the obstacle on the course, before returning to State 1 for line following.
+
+When the robot enters the finishing area, the task enters State 4, where the robot drives to the center of the finishing area, and turns in place until its heading is 180 degrees past that of its initial heading. It then begins driving straight backwards and enters State 5. In State 5, the robot drives straight backward until it detects the starting area, where the task then enters State 6 to center itself in the box, and finally enters State 7 to turn the robot around and re-initialize the program to prepare for future runs.
+
 ![Driving Mode Task](images/driving-mode-task.png "Driving Mode Task")
 
 **Figure 5:** Driving Mode Task State Transition Diagram
