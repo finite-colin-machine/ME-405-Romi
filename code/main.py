@@ -487,7 +487,7 @@ def driving_mode(shares):
                     state = 5
             yield(state)
             
-        elif state == 5:                    # end state
+        elif state == 5:                # watch for line state
             qtr.read_line()
             if qtr.full_black == True:
                 enc_R.zero()
