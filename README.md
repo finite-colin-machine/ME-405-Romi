@@ -3,7 +3,7 @@
 ![Romi](images/romi.JPG "Romi")
 **Figure 1:** Finished robot
 
-This is the repository for the Cal Poly ME-405 term project that required building and programming a line following differential drive robot. The robot follows a black line from the start box to the finish box and navigates around a wall obstacle along the way. After finishing, the robot drives back to start and prepares for another run. The robot features a line sensor, bump sensors, and a 9-DOF absolute orientation IMU to read heading and yaw. The robot can successfully navigate the course. The line following is accurate, even with challenging shapes like dashes and horizontal lines in the path, and the control system results in smooth driving.
+This is the repository for the Cal Poly ME-405 term project by Colin Bentley and Jack Maxwell that required building and programming a line following differential drive robot. The robot follows a black line from the start box to the finish box and navigates around a wall obstacle along the way. After finishing, the robot drives back to start and prepares for another run. The robot features a line sensor, bump sensors, and a 9-DOF absolute orientation IMU to read heading and yaw. The robot can successfully navigate the course. The line following is accurate, even with challenging shapes like dashes and horizontal lines in the path, and the control system results in smooth driving.
 
 [Watch Romi complete the course](https://cpslo-my.sharepoint.com/:v:/g/personal/cobentle_calpoly_edu/EcgrodB_KnZJpqk-TpCn7YkBvjt-W66TGioHFDayowuLnw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=5IIpsw)
 
