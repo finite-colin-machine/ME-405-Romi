@@ -5,10 +5,6 @@
          It supports operations such as setting modes, retrieving calibration data, and reading 
          orientation and angular velocity data. The implementation is inspired by existing drivers 
          like the MicroPython-BNO055 driver by Peter Hinch and the Adafruit CircuitPython driver.
-
-Classes:
-    - BNO055: A class to interact with the BNO055 IMU sensor.
-
 @author Colin Bentley and Jack Maxwell
 @date 11/19/2024
 """
@@ -119,7 +115,6 @@ class BNO055:
         # Unpack the data into individual axes
         self.gyr_x, self.gyr_y, self.gyr_z = struct.unpack('<hhh', buf)
         self.gyr_z /= 16                        # Convert yaw rate to degrees/second
-
 
 if __name__ == '__main__':
     i2c1 = machine.I2C(1)  # Configure I2C on pins B8 (SCL) and B9 (SDA)
