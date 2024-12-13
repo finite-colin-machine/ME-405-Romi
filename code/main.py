@@ -454,7 +454,7 @@ def driving_mode(shares):
                 state = 1                         # Set to line follow state
             yield(state)
             
-        elif state == 4:                         # turn around state
+        elif state == 4:                         # head back state
             enc_R.update()                       # Update encoder position
             position = abs(enc_R.get_position()) # Get position magnitude
             
