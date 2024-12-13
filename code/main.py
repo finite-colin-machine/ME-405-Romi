@@ -57,7 +57,7 @@ def planner(shares):
             # print('bypassing calibration')
             
             if calibrated == False:
-                state = 4   # set calibration state
+                state = 2   # set calibration state
             else:
                 print('Press blue button to begin driving')
                 state = 1   # set wait state
@@ -71,7 +71,7 @@ def planner(shares):
                 my_yaw_setpoint.put(0)
             yield(state)
         
-        elif (state == 4):                           # calibration state
+        elif (state == 2):                           # calibration state
             
             file_known = False                       # initialize flag
             calibrated = False                       # initialize calibration status
