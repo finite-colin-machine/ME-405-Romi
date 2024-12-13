@@ -22,7 +22,7 @@ class line_sensor:
     def read_line(self):
         '''!@brief Reads the sensor and outputs a weighted average of the readings
         '''
-        outputs = []                         # init output list
+        outputs = []                                       # init output list
         scale = [-1.4, 1.4, -2.4, 2.4, -3.75, 3.75, -5, 5] # scale used for calculating weighted average 
         
         for sensor in self.sensors:
@@ -39,7 +39,8 @@ class line_sensor:
                 
             decay = ticks_diff(ticks_us(), time_start) # calculate length of decay
             outputs.append(decay)                      # add measurement to list
-        
+
+        # raise full_black flag if the total outputs are above a certain threshold
         abs_reading = sum(outputs)
         if abs_reading > 12000:
             self.full_black = True
