@@ -80,6 +80,19 @@ The code folder contains all of the files that need to be stored on the Nucleo i
 ### Task Structure
 ADD OVERALL TASK DIAGRAM AND INDIVIDUAL FSMs WITH DISCUSSION SIMILAR TO LAB 3
 
+![Planner Task](images/planner-task.png "Planner Task")
+**Figure 5:** Planner Task State Transition Diagram
+
+![Robot Control Task](images/robot-control-task.png "Robot Control Task")
+**Figure 5:** Robot Control Task State Transition Diagram
+
+![Motor Control Task](images/motor-control-task.png "Motor Control Task")
+**Figure 5:** Motor Control Task State Transition Diagram
+
+![Driving Mode Task](images/driving-mode-task.png "Driving Mode Task")
+**Figure 5:** Driving Mode Task State Transition Diagram
+
+
 ### Control System
 Figure 5 depicts the overall control system for the robot. We specify velocity and setpoints for the robot control loop either manually or using feedback from devices like the line sensor. . The robot control calculates the actual translational velocity using wheel speed measurements from the motor tasks and gathers yaw measurements from the IMU. Both are fed through PI control to become velocity and yaw requests. Omega setpoints are calculated from these requests using the robot parameters and sent to each of the motor control tasks. The motor control tasks perform PI control of the left and right wheel speeds using omega setpoints from the robot control and real omega measurements calculated from the encoders.
 
