@@ -93,9 +93,25 @@ The Planner Task in our code is less complex than the other tasks, but is still 
 
 **Figure 5:** Planner Task State Transition Diagram
 
+The robot control task is the outer loop of our system control, as seen in Figure XXXXXXXXXXXXX. In State 1,
+This task takes in the translational velocity and yaw rate setpoints calculated by the driving mode task, as well
+as the actual wheel velocities calculated by the motor control task. Using the individual wheel velocities,
+this task calculates the actual translational velocity, and using the heading data from the IMU, calculates
+the actual yaw rate of Romi. PI Control (proportional and integral control) is performed on these values to
+calculate a velocity request and a yaw rate request, which are converted to a left and right wheel speed
+request, which are then sent to the individual wheel control tasks using shares. In State 0, the timer used to
+calculate the integral error for integral control is continuously reset to avoid integral error buildup while the
+control is off.
+
 ![Robot Control Task](images/robot-control-task.png "Robot Control Task")
 
 **Figure 5:** Robot Control Task State Transition Diagram
+
+The motor control tasks act similarly to the overall robot control. They take in the setpoints for
+wheel velocity calculated by robot control and perform PI control on them to determine the duty cycle
+percentage that is sent to each motor. The actual velocities are sent to the robot control task when they are
+measured. Like the robot control, State 0 updates the encoder each pass-through to avoid integral error
+buildup.
 
 ![Motor Control Task](images/motor-control-task.png "Motor Control Task")
 
