@@ -4,7 +4,7 @@
 @details This program provides an interface for the BNO055 IMU sensor using I2C communication. 
          It supports operations such as setting modes, retrieving calibration data, and reading 
          orientation and angular velocity data. The implementation is inspired by existing drivers 
-         like the MicroPython-BNO055 driver by Peter Hinch and the Adafruit CircuitPython driver.
+         like the MicroPython-BNO055 driver by Peter Hinch and the Adafruit CircuitPython driver by Radomir Dopieralski.
 @author Colin Bentley and Jack Maxwell
 @date 11/19/2024
 """
