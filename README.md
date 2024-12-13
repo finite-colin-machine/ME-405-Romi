@@ -92,22 +92,21 @@ ADD OVERALL TASK DIAGRAM AND INDIVIDUAL FSMs WITH DISCUSSION SIMILAR TO LAB 3
 
 The Planner Task in our code is less complex than the other tasks, but is still crucial to the success of the program. In State 0, some system parameters are initialized, and on startup and when the code is reset from the PuTTY REPL, the task switches to State 2 for calibration. Upon successful calibration the task moves to State 1, where you are prompted to press the blue button to begin driving. Pressing the blue button will enable the system control loop and allow the robot to begin moving forward.
 
-
 ![Planner Task](images/planner-task.png "Planner Task")
 
-**Figure 5:** Planner Task State Transition Diagram
+**Figure 6:** Planner Task State Transition Diagram
 
-The robot control task is the outer loop of our system control, as seen in Figure XXXXXXXXXXXXX. In State 1, this task takes in the translational velocity and yaw rate setpoints calculated by the driving mode task, as well as the actual wheel velocities calculated by the motor control task. Using the individual wheel velocities, this task calculates the actual translational velocity, and using the heading data from the IMU, calculates the actual yaw rate of Romi. PI Control (proportional and integral control) is performed on these values to calculate a velocity request and a yaw rate request, which are converted to a left and right wheel speed request, which are then sent to the individual wheel control tasks using shares. In State 0, the timer used to calculate the integral error for integral control is continuously reset to avoid integral error buildup while the control is off.
+The robot control task is the outer loop of our system control, as seen in Figure 7. In State 1, this task takes in the translational velocity and yaw rate setpoints calculated by the driving mode task, as well as the actual wheel velocities calculated by the motor control task. Using the individual wheel velocities, this task calculates the actual translational velocity, and using the heading data from the IMU, calculates the actual yaw rate of Romi. PI Control (proportional and integral control) is performed on these values to calculate a velocity request and a yaw rate request, which are converted to a left and right wheel speed request, which are then sent to the individual wheel control tasks using shares. In State 0, the timer used to calculate the integral error for integral control is continuously reset to avoid integral error buildup while the control is off.
 
 ![Robot Control Task](images/robot-control-task.png "Robot Control Task")
 
-**Figure 5:** Robot Control Task State Transition Diagram
+**Figure 7:** Robot Control Task State Transition Diagram
 
 The motor control tasks act similarly to the overall robot control. They take in the setpoints for wheel velocity calculated by robot control and perform PI control on them to determine the duty cycle percentage that is sent to each motor. The actual velocities are sent to the robot control task when they are measured. Like the robot control, State 0 updates the encoder each pass-through to avoid integral error buildup.
 
 ![Motor Control Task](images/motor-control-task.png "Motor Control Task")
 
-**Figure 5:** Motor Control Task State Transition Diagram
+**Figure 8:** Motor Control Task State Transition Diagram
 
 The driving mode task is our most complex task, as it is responsible for keeping the robot on the line and making it drive around the obstacle on the course. State 0 initializes some variables and flagsthat are used throughout the task, and when the system control flag is raised by the planner task, it moves to State 3, which instructs it to drive forward to leave the starting area. Once the robot has left the starting area, State 1 is entered, which is our main line-following state. This state reads the line sensor, and sends a yaw rate request to the system control based on the location of the line relative to the robot. When a bump is detected by the bump sensors mounted to the robot, the task enters State 2, where the robot is given a specific set of instructions to drive around the obstacle on the course, before returning to State 1 for line following.
 
@@ -115,15 +114,22 @@ When the robot enters the finishing area, the task enters State 4, where the rob
 
 ![Driving Mode Task](images/driving-mode-task.png "Driving Mode Task")
 
-**Figure 5:** Driving Mode Task State Transition Diagram
-
+**Figure 9:** Driving Mode Task State Transition Diagram
 
 ### Control System
 Figure 5 depicts the overall control system for the robot. We specify velocity and setpoints for the robot control loop either manually or using feedback from devices like the line sensor. . The robot control calculates the actual translational velocity using wheel speed measurements from the motor tasks and gathers yaw measurements from the IMU. Both are fed through PI control to become velocity and yaw requests. Omega setpoints are calculated from these requests using the robot parameters and sent to each of the motor control tasks. The motor control tasks perform PI control of the left and right wheel speeds using omega setpoints from the robot control and real omega measurements calculated from the encoders.
 
 ![Control System](images/control-system.png "Control System")
 
-**Figure 5:** Overall control system
+**Figure 10:** Overall control system
 
 ## Supporting Calculations
+Figures 11 and 12 show the calculations for translational velocity from the wheel speeds and the angular velocity setpoints from the velocity and yaw setpoints. These calculations are performed in the robot control task.
 
+![Translational Velocity Calculation](images/velocity-calculation.png "Translational Velocity Calculation")
+
+**Figure 11:** Translational velocity calculation
+
+![Angular Velocity Calculation](images/angular-velocity-calculation.png "Angular Velocity Calculation")
+
+**Figure 12:** Angular velocity calculation
