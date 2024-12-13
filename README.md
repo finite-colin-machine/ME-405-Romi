@@ -13,11 +13,13 @@ This project has room for future improvements. Currently, the wall navigation pa
 The robot is built off a Romi chassis and controlled using a Nucleo L476RG running MicroPython. An additional circuit board called the Shoe of Brian attaches to the Nucleo. Information about the shoe and general support for the techniques used in this project can be found [here](https://github.com/spluttflob/ME405-Support).
 
 ![Romi Front](images/romi-front.JPG "Romi Front")
+
 **Figure 2:** Romi front view with IMU and bluetooth module shown on the sides
 
 The Nucleo attaches to standoffs and an acrylic mount as shown in this [model](https://cad.onshape.com/documents/b78783ff999bc8e6a9990234). The IMU and optional Bluetooth module are taped to the sides of the acrylic mount. The bump sensors screw directly to the front of the chassis, and the line sensor is taped to the line sensor mount which taped to the chassis.
 
 ![Romi Bottom](images/romi-bottom.JPG "Romi Bottom")
+
 **Figure 3:** Romi bottom view with line sensor
 
 Table 1 lists all of the parts besides the jumper wires used in this project.
@@ -101,6 +103,7 @@ ADD OVERALL TASK DIAGRAM AND INDIVIDUAL FSMs WITH DISCUSSION SIMILAR TO LAB 3
 Figure 5 depicts the overall control system for the robot. We specify velocity and setpoints for the robot control loop either manually or using feedback from devices like the line sensor. . The robot control calculates the actual translational velocity using wheel speed measurements from the motor tasks and gathers yaw measurements from the IMU. Both are fed through PI control to become velocity and yaw requests. Omega setpoints are calculated from these requests using the robot parameters and sent to each of the motor control tasks. The motor control tasks perform PI control of the left and right wheel speeds using omega setpoints from the robot control and real omega measurements calculated from the encoders.
 
 ![Control System](images/control-system.png "Control System")
+
 **Figure 5:** Overall control system
 
 ## Supporting Calculations
