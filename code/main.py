@@ -1,10 +1,22 @@
 """!
 @file main.py 
 @author Colin Bentley and Jack Maxwell
-@date 11/19/2024
+@date 12/13/2024
 
-ADD INFO HERE
+This program is used to make a Romi robot follow a line-based obstacle course.
+This program is part of assignment Term Project 0x02 - Romi Time-Trials for ME 405.
 
+Users place Romi inside the starting area and press the blue botton to start, and
+thr robot autonomously guides itself through the course to the finsih line, and returns
+to the startimng area.
+
+Romi accomplishes this by taking readings with a line sensor, which are converted to 
+yaw-rate changes for the control scheme to follow. Additionally, there is a bump sensor
+mounted to the robot that when presses, puts the robot into a pre-set path around the 
+obstacle before resuming line-following.
+
+The standard control scheme uses a robot control task that takes in yaw rate and velocity
+information, and feeds wheel speed setpoints to the motor control tasks.
 """
 
 # Import modules
@@ -30,27 +42,28 @@ def bump_toggle(pressed):
     global bump_detected
     bump_detected = True
     print('Hey! Who put that there?')
+    # The bump sensors have a small amount of signal bouncing - this
+    # is handled by not resetting the bump_detected flag until the
+    # end of the pre-coded sequence.
 
 # Create generator functions acting as tasks containing FSMs
 def planner(shares):
     """!
-    Task which calculates set points needed to drive in a circle and handles starting/stopping the robot
+    Task which handles the IMU calibratrion and waits for the blue button to be pressed.
     @param shares A tuple of a share and queue from which this task gets data
     """
-    global user_button_pressed, bump_detected, w, r # list global variables
+    global user_button_pressed, bump_detected # list global variables
     
     # get references to the shares and queues which have been passed to this task
     my_velocity_setpoint, my_yaw_setpoint, my_control_flag, my_calibration_flag = shares
     
-    state = 0          # initialize state
-    calibrated = False # initialize calibration
-    my_calibration_flag.put(0)
+    state = 0                  # initialize state
+    calibrated = False         # initialize calibration
+    my_calibration_flag.put(0) # initialize calibration flag
 
     while True:
         if (state == 0):                        # init state
             V = .10                             # user input robot translational velocity [m/s]
-            w = .141                            # robot track width [m]
-            r = .035                            # robot wheel radius [m]
             
             # # # TO BYPASS CALIBRATION CHECK
             # calibrated = True
@@ -65,10 +78,10 @@ def planner(shares):
             
         elif (state == 1):  # wait and search for bump state state
             if user_button_pressed == True:
-                user_button_pressed = False # if so, reset the user button flag
-                my_control_flag.put(1)
-                my_velocity_setpoint.put(V)
-                my_yaw_setpoint.put(0)
+                user_button_pressed = False    # if so, reset the user button flag
+                my_control_flag.put(1)         # raise control flag       
+                my_velocity_setpoint.put(V)    # set velocity for robot control task
+                my_yaw_setpoint.put(0)         # set yaw rate for robot control task
             yield(state)
         
         elif (state == 2):                           # calibration state
@@ -310,10 +323,12 @@ def motor_R_control(shares):
             
 def driving_mode(shares):
     """!
-    
-    @param 
+    Task which handles the line following and obstacle avoidance behavior of the robot. The robot
+    follows the line until a bump is detected, drives around the obstacle, and returns to line
+    following until reaching the finish line, where the robot then returns to the start.
+    @param shares is a tuple of a share and queue from which this task gets data 
     """
-    global bump_detected
+    global bump_detected # list global variables
     
     # get references to the shares and queues which have been passed to this task
     my_velocity_setpoint, my_yaw_setpoint, my_control_flag, my_calibration_flag = shares
@@ -326,20 +341,20 @@ def driving_mode(shares):
     turn_90 = 1440*w/(8*r)              # distance for robot to turn 90 degrees in place [encoder counts]
     
     # init variables
-    after_wall = False
+    after_wall = False  # flag that is raised once the obstacle has been cleared
     state = 0
     
     while True:
-        if state == 0:                             # starting state
-            control_on = my_control_flag.get()     # get control flag
-            calibrated = my_calibration_flag.get() # get calibration flag
-            if calibrated == 0:                    # ignore bump detection before calibration
+        if state == 0:                                 # starting state
+            control_on = my_control_flag.get()         # get control flag
+            calibrated = my_calibration_flag.get()     # get calibration flag
+            if calibrated == 0:                        # ignore bump detection before calibration
                 bump_detected = False
-            if control_on == 1:                    # set to control state if flag raised
-                IMU.read_euler()
-                starting_heading = IMU.euler_heading
-                enc_R.zero()                       # clear encoder position
-                state = 3                          # set leave box
+            if control_on == 1:                        # set to control state if flag raised
+                IMU.read_euler()                       # read the IMU
+                starting_heading = IMU.euler_heading   # retrieve the robots heading to allow it to return to the start
+                enc_R.zero()                           # clear encoder position
+                state = 3                              # set leave box
             yield(state)                   
         
         elif state == 1:                                        # line follow state
@@ -349,22 +364,22 @@ def driving_mode(shares):
                 section_complete = False                        # Initialize square section completion flag
                 square_idx = 1                                  # Init square index
                 state = 2                                       # set square driving state
-            elif after_wall == True and qtr.full_black == True: # if robot crosses black line after bumping wall
+            elif after_wall == True and qtr.full_black == True: # if robot crosses black line after bumping wall, it's at the finish line
                 my_velocity_setpoint.put(V)                     # set velocity
                 my_yaw_setpoint.put(0)                          # set yaw
                 enc_R.zero()                                    # clear encoder
-                after_wall = False
-                return_idx = 1
+                after_wall = False                              # reset flag for future runs
+                return_idx = 1                                  # initialize return sequence index
                 state = 4                                       # set turn around state
             else:                                               # otherwise
                 yaw = qtr.read_line()/1500                      # read line and scale measurement
-                if qtr.full_black:
-                    my_yaw_setpoint.put(0)
+                if qtr.full_black:                              # if the robot senses a prependicular line
+                    my_yaw_setpoint.put(0)                      # set yaw to zero to minimize "twitching"
                 else:
-                    my_yaw_setpoint.put(yaw)                        # Set yaw based on line reading
+                    my_yaw_setpoint.put(yaw)                    # Set yaw based on line reading
             yield(state)   
             
-        elif state == 2:                          # square state
+        elif state == 2:                          # drive in square state
             enc_R.update()                        # Update encoder position
             position = abs(enc_R.get_position())  # Get position magnitude
             
@@ -373,13 +388,13 @@ def driving_mode(shares):
                 my_yaw_setpoint.put(0)        # No yaw change
                 my_control_flag.put(1)        # Start movement
                 if position > drive_3 / 2:    # Condition to finish backing up
-                    my_control_flag.put(0)
-                    square_idx += 1
-                    enc_R.zero()
-                    section_complete = True
+                    my_control_flag.put(0)    # turn off control so the robot stops at each step
+                    square_idx += 1           # increase the square path index
+                    enc_R.zero()              # zero encoders
+                    section_complete = True   # raise section complete flag so the next square step isn't entered immediately
             
             elif square_idx in [2, 4] and not section_complete:  # Steps 2 and 4: Turn 90 degrees
-                turn_speed = -pi/2 if square_idx == 2 else pi/2
+                turn_speed = -pi/2 if square_idx == 2 else pi/2  # turn left for state 2, right for state 4
                 my_velocity_setpoint.put(0)      # No forward motion
                 my_yaw_setpoint.put(turn_speed)  # Set yaw rate
                 my_control_flag.put(1)           # Start turn
@@ -400,51 +415,38 @@ def driving_mode(shares):
                     section_complete = True
             
             elif square_idx == 5 and not section_complete:  # Step 5: Drive forward longer distance
-                my_velocity_setpoint.put(V)
-                my_yaw_setpoint.put(0)
-                my_control_flag.put(1)
-                if position > drive_3 * 6:
+                my_velocity_setpoint.put(V)  # Forward velocity
+                my_yaw_setpoint.put(0)       # No yaw change
+                my_control_flag.put(1)       # Start forward motion
+                if position > drive_3 * 6:   # Condition to finish drive
                     my_control_flag.put(0)
                     square_idx += 1
                     enc_R.zero()
                     section_complete = True
                     
             elif square_idx == 6 and not section_complete:  # Step 6: Turn slightly less than 90 degrees
-                my_velocity_setpoint.put(0)
-                my_yaw_setpoint.put(pi/2)
-                my_control_flag.put(1)
-                if position > turn_90 * 0.65:
+                my_velocity_setpoint.put(0)  # No forward motion
+                my_yaw_setpoint.put(pi/2)    # Set yaw rate
+                my_control_flag.put(1)       # Start turn
+                if position > turn_90 * .65: # Condition to finish turn
                     my_control_flag.put(0)
                     square_idx += 1
                     enc_R.zero()
                     section_complete = True
                     
-            elif square_idx == 7 and not section_complete:  # Step 7: Drive forward longer distance
-                my_velocity_setpoint.put(V)
-                my_yaw_setpoint.put(0)
-                my_control_flag.put(1)
-                if position > drive_3 * 4:
-                    # my_control_flag.put(1)
-                    # my_velocity_setpoint.put(V)
-                    # my_yaw_setpoint.put(0)
+            elif square_idx == 7 and not section_complete:  # Step 7: Drive forward until the line has been reached
+                my_velocity_setpoint.put(V)  # Forward velocity
+                my_yaw_setpoint.put(0)       # No yaw change
+                my_control_flag.put(1)       # Start forward motion
+                if position > drive_3 * 4:   # Condition to finish drive
                     enc_R.zero()
                     square_idx = 0          # Reset for future operations
-                    bump_detected = False   # reset the flag
-                    after_wall = True
-                    state = 1
-            
-            # elif square_idx == 9 and not section_complete:  # Final step: Stop and reset
-            #     my_control_flag.put(1)
-            #     my_velocity_setpoint.put(V)
-            #     my_yaw_setpoint.put(0)
-            #     enc_R.zero()
-            #     square_idx = 0          # Reset for future operations
-            #     bump_detected = False   # reset the flag
-            #     after_wall = True
-            #     state = 1
-                
-            if section_complete:
-                section_complete = False
+                    bump_detected = False   # reset the bump detection flag
+                    after_wall = True       # raise obstacle cleared flag
+                    state = 1               # return to line following
+
+            if section_complete:            # when a section has been completed
+                section_complete = False    # lower the flag so the nect step can begin
             yield(state)
             
         elif state == 3:                          # Leave box state
@@ -459,60 +461,62 @@ def driving_mode(shares):
             position = abs(enc_R.get_position()) # Get position magnitude
             
             
-            if return_idx == 1:              # Step 1: drive forward
-                my_control_flag.put(1)       # Start movement
-                if position > drive_3 *2:    # After driving correct distance
-                    my_velocity_setpoint.put(0) # Set velocity
-                    my_yaw_setpoint.put(pi/4)       # Set yaw
-                    my_control_flag.put(0)   # Turn off control
-                    return_idx += 1          # increment index
-                    enc_R.zero()             # Clear encoder position
+            if return_idx == 1:                  # Step 1: drive forward
+                my_control_flag.put(1)           # Start movement
+                if position > drive_3 *2:        # After driving correct distance
+                    my_velocity_setpoint.put(0)  # Set velocity
+                    my_yaw_setpoint.put(pi/4)    # Set yaw
+                    my_control_flag.put(0)       # Turn off control
+                    return_idx += 1              # increment index
+                    enc_R.zero()                 # Clear encoder position
     
-            elif return_idx == 2:              # Step 2: adjust heading
-                my_control_flag.put(1)         # Start movement
+            elif return_idx == 2:                # Step 2: adjust heading
+                my_control_flag.put(1)           # Start movement
                 IMU.read_euler()
                 if IMU.euler_heading > (starting_heading - 1):    # After driving correct distance
                     my_velocity_setpoint.put(-V) # Set reverse velocity
                     my_yaw_setpoint.put(0)       # No yaw change
-                    my_control_flag.put(0)   # Turn off control
-                    return_idx += 1          # increment index
-                    enc_R.zero()             # Clear encoder position
+                    my_control_flag.put(0)       # Turn off control
+                    return_idx += 1              # increment index
+                    enc_R.zero()                 # Clear encoder position
     
-            else:                            # Step 3: drive backwards
-                my_control_flag.put(1)       # Start movement
-                if position > drive_3 *3:    # After driving correct distance
+            else:                                # Step 3: drive backwards
+                my_control_flag.put(1)           # Start movement
+                if position > drive_3 *3:        # After driving correct distance
                     
                     return_idx = 1
                     enc_R.zero()
                     state = 5
             yield(state)
-            
+
+
+        # Note: States 5 - 7 could have been implemented as a single state, but this seemed a little easier at the time
         elif state == 5:                # watch for line state
-            qtr.read_line()
-            if qtr.full_black == True:
-                enc_R.zero()
-                state = 6
+            qtr.read_line()             # read the line sensor
+            if qtr.full_black == True:  # if there is a horizontal black line, the start box has been located
+                enc_R.zero()            # zero encoder
+                state = 6               # enter state 6
             yield(state)
             
         elif state == 6:                          # drive into box state
             enc_R.update()                        # Update encoder position
             position = abs(enc_R.get_position())  # Current position magnitude
-            if position > drive_3 *1.5:             # Condition to finish backing up
-                my_velocity_setpoint.put(0)
-                my_yaw_setpoint.put(pi/2)         # Set yaw
-                my_control_flag.put(0)
-                enc_R.zero()
-                state = 7
+            if position > drive_3 *1.5:           # drive 4.5 inches
+                my_velocity_setpoint.put(0)       # set velocity to zero
+                my_yaw_setpoint.put(pi/2)         # Set yaw for turn around
+                my_control_flag.put(0)            # turn off control so the robot stops before turning
+                enc_R.zero()                      # zero encoder
+                state = 7                         # enter state 7
             yield(state)
               
         elif state == 7:                          # turn in place state
-            my_control_flag.put(1)
+            my_control_flag.put(1)                # enable robot control
             enc_R.update()                        # Update encoder position
             position = abs(enc_R.get_position())  # Current position magnitude
             if position > turn_90*2:              # Condition to finish turn
-                my_control_flag.put(0)
-                enc_R.zero()
-                state = 0
+                my_control_flag.put(0)            # once turn has been completed, turn off control
+                enc_R.zero()                      # zero encoder
+                state = 0                         # enter init state
             yield(state)
             
         else:                   # if state isnt found
